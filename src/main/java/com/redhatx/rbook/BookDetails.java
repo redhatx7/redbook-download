@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 
 public class BookDetails extends AppCompatActivity {
 
-    private TextView bookTitle, bookAuthors, bookPublisher, bookPages, bookPrice, bookPublishYear;
+    private TextView bookTitle, bookAuthors, bookPublisher, bookPages, bookPrice, bookPublishYear, bookDesc;
     private ImageView bookImage;
     private Button downloadButton;
     private Context context;
@@ -30,8 +30,9 @@ public class BookDetails extends AppCompatActivity {
         bookPages = (TextView) findViewById(R.id.tv_details_pages);
         bookPrice = (TextView) findViewById(R.id.tv_details_price);
         bookPublishYear = (TextView) findViewById(R.id.tv_details_publish_year);
-        downloadButton = (Button) findViewById(R.id.btn_download);
-        bookImage = (ImageView) findViewById(R.id.tv_details_img);
+        downloadButton = (Button) findViewById(R.id.btn_details_download);
+        bookImage = (ImageView) findViewById(R.id.img_details);
+        bookDesc = (TextView) findViewById(R.id.tv_details_desc);
         Picasso.get().load(book.getImage()).into(bookImage);
         bookTitle.setText(book.getTitle());
         bookAuthors.setText(book.getAuthors());
@@ -39,6 +40,8 @@ public class BookDetails extends AppCompatActivity {
         bookPages.setText("" + book.getPages());
         bookPrice.setText(book.getPrice());
         bookPublishYear.setText(book.getYear() + "");
+        bookDesc.setText(book.getDesc() + "\n\n\n\n\n");
+
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
