@@ -7,15 +7,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 public class BookDetails extends AppCompatActivity {
 
-    private TextView bookTitle,bookAuthors,bookPublisher,bookPages,bookPrice;
+    private TextView bookTitle, bookAuthors, bookPublisher, bookPages, bookPrice, bookPublishYear;
     private ImageView bookImage;
     private Button downloadButton;
     private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,22 +26,41 @@ public class BookDetails extends AppCompatActivity {
         context = this;
         bookTitle = (TextView) findViewById(R.id.tv_details_title);
         bookAuthors = (TextView) findViewById(R.id.tv_details_authors);
-        bookPublisher =(TextView) findViewById(R.id.tv_details_publisher);
+        bookPublisher = (TextView) findViewById(R.id.tv_details_publisher);
         bookPages = (TextView) findViewById(R.id.tv_details_pages);
         bookPrice = (TextView) findViewById(R.id.tv_details_price);
-        bookImage = (ImageView) findViewById(R.id.tv_details_img);
+        bookPublishYear = (TextView) findViewById(R.id.tv_details_publish_year);
         downloadButton = (Button) findViewById(R.id.btn_download);
+        bookImage = (ImageView) findViewById(R.id.tv_details_img);
         Picasso.get().load(book.getImage()).into(bookImage);
         bookTitle.setText(book.getTitle());
         bookAuthors.setText(book.getAuthors());
         bookPublisher.setText(book.getPublisher());
         bookPages.setText("" + book.getPages());
         bookPrice.setText(book.getPrice());
-
+        bookPublishYear.setText(book.getYear() + "");
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               LibgenNetwork.getFileToDownload(book.getIsbn13(),context);
+                Toast.makeText(context, "در حال دریافت لینک دانلود...", Toast.LENGTH_LONG).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        LibgenNetwork libgenNetwork = new LibgenNetwork();
+                        boolean isAvailable = libgenNetwork.getFileToDownload(book.getIsbn13(), context);
+                        if (!isAvailable) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(context, " متاسفانه این کتاب برای دانلود موجود نمی باشد", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+
+
+                    }
+                }).start();
             }
         });
 

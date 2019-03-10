@@ -1,6 +1,7 @@
 
 
 package com.redhatx.rbook;
+
 import android.util.Log;
 
 import org.json.*;
@@ -25,7 +26,6 @@ public class Book implements Serializable {
     private String price;
     private String image;
     private String url;
-
 
 
     public String getTitle() {
@@ -80,7 +80,7 @@ public class Book implements Serializable {
         return url;
     }
 
-    public Book(JSONObject object){
+    public Book(JSONObject object) {
         try {
             title = object.getString("title");
             authors = object.getString("authors");
@@ -95,11 +95,10 @@ public class Book implements Serializable {
             price = object.getString("price");
             image = object.getString("image");
             url = object.getString("url");
-            Log.i(TAG,"Json parsed successfully");
+            Log.i(TAG, "Json parsed successfully");
 
-        }
-        catch (JSONException ex){
-            Log.e(TAG,ex.getMessage());
+        } catch (JSONException ex) {
+            Log.e(TAG, ex.getMessage());
         }
 
     }

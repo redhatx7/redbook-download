@@ -28,27 +28,25 @@ public class LibgenNetwork {
 
     private static final String DOWNLOAD_URL = "http://booksdl.org/get.php";
 
-    private static URL generateUrl(String isbn){
+    private URL generateUrl(String isbn) {
         Uri uri = Uri.parse(LIBGEN_URL).buildUpon()
-                .appendQueryParameter(REQUEST,isbn)
-                .appendQueryParameter(TOPIC,TOPIC_NAME)
-                .appendQueryParameter(VIEW,VIEW_TYPE)
+                .appendQueryParameter(REQUEST, isbn)
+                .appendQueryParameter(TOPIC, TOPIC_NAME)
+                .appendQueryParameter(VIEW, VIEW_TYPE)
                 .build();
         URL url = null;
         try {
             url = new URL(uri.toString());
-        }
-        catch (MalformedURLException ex){
-            Log.e(TAG,"Error while parsing url " + ex.getMessage());
+        } catch (MalformedURLException ex) {
+            Log.e(TAG, "Error while parsing url " + ex.getMessage());
         }
         return url;
 
     }
 
 
-
-    public static boolean getFileToDownload(String isbn, Context ctx){
-        URL url = generateUrl(isbn);
+    public boolean getFileToDownload(String isbn, Context ctx) {
+        URL url = this.generateUrl(isbn);
         String body;
         Document document = null;
         try {
@@ -56,45 +54,53 @@ public class LibgenNetwork {
             document = Jsoup.parse(body);
             Element table = document.select("table.c").first();
             Elements tr = table.select("tr");
-            if(tr.size() <= 1){
-                Log.i(TAG,"Book not found ! ISBN : " + isbn);
+            if (tr.size() <= 1) {
+                Log.i(TAG, "Book not found ! ISBN : " + isbn);
                 return false;
             }
-            Log.i(TAG,"Size is " + tr.size());
-            for(int i = 1;i<tr.size();i++){
+            Log.i(TAG, "Size is " + tr.size());
+            boolean pdfFound = false;
+            for (int i = 1; i < tr.size(); i++) {
                 Element element = tr.get(i);
                 Elements td = element.select("td");
-                if(td.size() <= 9) continue;
-                String exp = td.get(8).ownText();
+                if (td.size() <= 9 && i < (tr.size() - 1)) continue;
+                else {
+                    pdfFound = true;
+                    i = 1;
+                }
+                String ext = td.get(8).ownText();
+                if (ext == "pdf") pdfFound = true;
                 String bookName = td.get(2).selectFirst("a").ownText();
                 String md5 = td.get(2).selectFirst("a").attr("href");
-                if(!md5.startsWith("book")){
+                if (!md5.startsWith("book")) {
                     md5 = td.get(2).select("a").get(1).attr("href");
                     bookName = td.get(2).select("a").get(1).ownText();
                 }
                 int index = md5.indexOf("md5=");
                 md5 = md5.substring(index + 4).trim();
-                if(exp != null){
-                    downloadFromLibgen(md5,bookName,exp,ctx);
+                if (ext != null && !md5.equals("") && pdfFound) {
+                    downloadFromLibgen(md5, bookName, ext, ctx);
                     return true;
+                } else if (!pdfFound && i == (tr.size() - 1)) {
+                    i = 1;
+                    pdfFound = true;
                 }
 
 
             }
-        }
-        catch (InterruptedException exx){
-            Log.e(TAG,"Async task Failed..." + exx.getMessage());
-        }
-        catch (ExecutionException exx){
-            Log.e(TAG,"Async task Failed..." + exx.getMessage());
+        } catch (InterruptedException exx) {
+            Log.e(TAG, "Async task Failed..." + exx.getMessage());
+        } catch (ExecutionException exx) {
+            Log.e(TAG, "Async task Failed..." + exx.getMessage());
         }
         return false;
     }
-    public static void downloadFromLibgen(String md5,String name,String exp,Context ctx){
+
+    public void downloadFromLibgen(String md5, String name, String exp, Context ctx) {
         Uri uri = Uri.parse(DOWNLOAD_URL).buildUpon()
-                .appendQueryParameter("md5",md5)
+                .appendQueryParameter("md5", md5)
                 .build();
-        new DownloadTaskAsync(ctx).execute(uri.toString(),name,exp);
+        new DownloadTaskAsync(ctx).execute(uri.toString(), name, exp);
     }
 
 }

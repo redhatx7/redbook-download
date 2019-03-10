@@ -1,8 +1,13 @@
 <resources>
-    <string name="app_name">RBook</string>
+    <string name="app_name">بوکر</string>
     <string name="book_name">نام کتاب</string>
     <string name="book_price">قیمت کتاب</string>
     <string name="book_authors">نویسندگان</string>
     <string name="book_publisher">ناشر</string>
     <string name="book_pages">صغحه</string>
+    <string name="search_book_text">جست و جو بر اساس نام،ISBN،..</string>
+    <string name="download_text"> دانلود ها</string>
+    <string name="search_text">جست و جو</string>
+    <string name="show_downloaded"> کتاب ها</string>
+    <string name="publish_year">سال انتشار</string>
 </resources>

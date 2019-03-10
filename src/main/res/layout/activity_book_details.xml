@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/tv_details_img"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 android:background="#9E9A9A"/>
 
            <TableLayout
@@ -34,21 +34,21 @@
                android:padding="8dp">
 
                <TableRow
-                   android:layout_marginBottom="16dp"
+                   android:layout_marginBottom="8dp"
                   >
 
                    <TextView
-
                        android:id="@+id/tv_details_title"
-                       android:layout_width="fill_parent"
-                       android:layout_height="wrap_content"
                        android:ellipsize="end"
                        android:gravity="left"
-                       android:maxWidth="250dp"
+                       android:layout_width="260dp"
+                       android:maxWidth="260dp"
                        android:layout_gravity="fill"
                        android:maxLines="4"
                        android:text="Book name"
-                       android:visibility="visible" />
+                       android:visibility="visible"
+                       android:textSize="16dp"
+                       android:textStyle="bold"/>
 
                    <TextView
                        android:text="@string/book_name"
@@ -59,13 +59,16 @@
 
                </TableRow>
                <TableRow
-                   android:layout_marginBottom="16dp">
+                   android:layout_marginBottom="8dp">
 
                    <TextView
                        android:id="@+id/tv_details_authors"
-                       android:text="Book authors"
+                       android:layout_width="260dp"
+                       android:maxWidth="260dp"
                        android:gravity="left"
-                       />
+                       android:text="Book authors"
+                       android:textSize="16dp"
+                       android:textStyle="bold"/>
 
                    <TextView
                        android:text="@string/book_authors"
@@ -77,31 +80,35 @@
                </TableRow>
 
                <TableRow
-                   android:layout_marginBottom="16dp">
-
+                   android:layout_marginBottom="8dp">
                    <TextView
-
                        android:id="@+id/tv_details_publisher"
                        android:text="Book publisher"
                        android:gravity="left"
+                       android:layout_width="260dp"
+                       android:maxWidth="260dp"
+                       android:textSize="16dp"
+                       android:textStyle="bold"
                        />
-
                    <TextView
                        android:text="@string/book_publisher"
                        android:gravity="right"
                        android:fontFamily="@font/yekan"
                        android:textSize="24dp"
                        android:textStyle="normal"/>
-
                </TableRow>
 
                <TableRow
-                   android:layout_marginBottom="16dp">
+                   android:layout_marginBottom="8dp">
 
                    <TextView
                        android:id="@+id/tv_details_price"
                        android:text="Book price"
                        android:gravity="left"
+                       android:layout_width="260dp"
+                       android:maxWidth="260dp"
+                       android:textSize="16dp"
+                       android:textStyle="bold"
                        />
 
                    <TextView
@@ -114,12 +121,16 @@
                </TableRow>
 
                <TableRow
-                   android:layout_marginBottom="16dp">
+                   android:layout_marginBottom="8dp">
 
                    <TextView
                        android:id="@+id/tv_details_pages"
                        android:text="Book pages"
                        android:gravity="left"
+                       android:layout_width="260dp"
+                       android:maxWidth="260dp"
+                       android:textSize="16dp"
+                       android:textStyle="bold"
                        />
 
                    <TextView
@@ -130,6 +141,28 @@
                        android:textStyle="normal"/>
 
                </TableRow>
+               <TableRow
+                   android:layout_marginBottom="8dp">
+
+                   <TextView
+                       android:id="@+id/tv_details_publish_year"
+                       android:text="Book publish year"
+                       android:gravity="left"
+                       android:layout_width="260dp"
+                       android:maxWidth="260dp"
+                       android:textSize="16dp"
+                       android:textStyle="bold"
+                       />
+
+                   <TextView
+                       android:text="@string/publish_year"
+                       android:gravity="right"
+                       android:fontFamily="@font/yekan"
+                       android:textSize="24dp"
+                       android:textStyle="normal"/>
+
+               </TableRow>
+
 
 
 

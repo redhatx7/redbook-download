@@ -10,19 +10,26 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.DownloadViewHolder> {
 
-    private List<Pair<String,Integer>> downloads;
+    private List<Pair<String, Integer>> downloads;
 
 
-    public DownloadAdapter(){
+    private Context context;
+
+    public DownloadAdapter(Context ctx) {
         downloads = DownloadData.getDownloadsAsList();
+        this.context = ctx;
+        if (this.downloads.size() == 0) {
+            Toast.makeText(context, "کتابی جهت دانلود وجود ندارد.", Toast.LENGTH_LONG).show();
+        }
     }
 
-    public void onDataSetChange(){
+    public void onDataSetChange() {
         downloads = DownloadData.getDownloadsAsList();
         notifyDataSetChanged();
     }
@@ -31,6 +38,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.Downlo
 
         private ProgressBar pDownloadBar;
         private TextView tBookname;
+
         public DownloadViewHolder(@NonNull View itemView) {
             super(itemView);
             pDownloadBar = (ProgressBar) itemView.findViewById(R.id.dl_progress);
@@ -38,8 +46,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.Downlo
 
         }
 
-        public void bind(int i){
-            Pair<String,Integer> pair= downloads.get(i);
+        public void bind(int i) {
+            Pair<String, Integer> pair = downloads.get(i);
             String bookName = pair.first;
             int progress = pair.second;
             pDownloadBar.setProgress(progress);
@@ -54,8 +62,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.Downlo
         Context context = viewGroup.getContext();
         int layoutId = R.layout.download_item;
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(layoutId,viewGroup,false);
-        DownloadViewHolder downloadViewHolder =  new DownloadViewHolder(view);
+        View view = inflater.inflate(layoutId, viewGroup, false);
+        DownloadViewHolder downloadViewHolder = new DownloadViewHolder(view);
         return downloadViewHolder;
     }
 
@@ -66,6 +74,6 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.Downlo
 
     @Override
     public int getItemCount() {
-        return  downloads.size();
+        return downloads.size();
     }
 }

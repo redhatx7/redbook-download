@@ -11,34 +11,35 @@ public class DownloadsActivity extends AppCompatActivity {
 
     private RecyclerView rvDownloads;
     private DownloadAdapter dlAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_downloads);
         rvDownloads = (RecyclerView) findViewById(R.id.rv_downloads);
-        dlAdapter = new DownloadAdapter();
+        dlAdapter = new DownloadAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvDownloads.setLayoutManager(linearLayoutManager);
         rvDownloads.setHasFixedSize(true);
         rvDownloads.setAdapter(dlAdapter);
-        new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true){
-                  runOnUiThread(new Runnable() {
-                      @Override
-                      public void run() {
-                         dlAdapter.onDataSetChange();
-                      }
-                  });
-                  try {
-                      Thread.sleep(1000);
-                  }
-                  catch (InterruptedException ex){
-                        Log.e(this.getClass().getSimpleName(),"Thread interrupted");
-                  }
+                while (true) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dlAdapter.onDataSetChange();
+                        }
+                    });
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Log.e(this.getClass().getSimpleName(), "Thread interrupted");
+                    }
                 }
             }
-        }).start();
+        });
+        t.start();
     }
 }

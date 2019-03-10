@@ -1,31 +1,34 @@
 package com.redhatx.rbook;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 
 
-
-public class ApiQueryTask{
+public class ApiQueryTask {
 
     private final String TAG = getClass().getSimpleName();
 
 
     interface BookAsyncResponse {
         void onNewBookTaskComplete(List<Book> books);
-        void onSingleBookTaskComplete(Book book);
+
+        void onSearchStart(int pageNumber);
+
         void onSearchBooksTaskComplete(List<Book> books);
     }
 
     private BookAsyncResponse bookAsyncResponse = null;
 
-    public ApiQueryTask(BookAsyncResponse delegate){
+    public ApiQueryTask(BookAsyncResponse delegate) {
         this.bookAsyncResponse = delegate;
     }
 
-    public class GetNewBookRequest extends AsyncTask<Void,Void,List<Book>> {
+    public class GetNewBookRequest extends AsyncTask<Void, Void, List<Book>> {
 
         @Override
         protected List<Book> doInBackground(Void... voids) {
@@ -36,7 +39,7 @@ public class ApiQueryTask{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.i(TAG,"Getting new releases books");
+            Log.i(TAG, "Getting new releases books");
         }
 
         @Override
@@ -45,19 +48,21 @@ public class ApiQueryTask{
         }
     }
 
-    public class SearchBookRequest extends AsyncTask<String,Void,List<Book>>{
 
+    public class SearchBookRequest extends AsyncTask<String, Void, List<Book>> {
         @Override
         protected List<Book> doInBackground(String... strings) {
             String query = strings[0];
-            List<Book> searchedBook = BookJsonHandler.searchBook(query);
+            int pageNumber = BookJsonHandler.getPageNumber(query);
+            bookAsyncResponse.onSearchStart(pageNumber);
+            List<Book> searchedBook = BookJsonHandler.searchBook(query, Integer.parseInt(strings[1]));
             return searchedBook;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.i(TAG,"Searching Books...");
+            Log.i(TAG, "Searching Books...");
         }
 
         @Override
@@ -67,7 +72,9 @@ public class ApiQueryTask{
     }
 
 
-    public class  GetSingleBookRequest extends AsyncTask<String,Void,Book>{
+     /*
+
+     public class  GetSingleBookRequest extends AsyncTask<String,Void,Book>{
         @Override
         protected Book doInBackground(String... strings) {
             String isbn13 = strings[0];
@@ -88,6 +95,8 @@ public class ApiQueryTask{
     }
 
 
+
+      */
 
 
 }
